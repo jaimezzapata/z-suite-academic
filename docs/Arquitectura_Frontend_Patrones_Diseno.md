@@ -15,7 +15,16 @@ Ningún componente de React (archivo `.tsx`) debe contener lógica de negocio, c
 - **La Vista** (`Component.tsx`): Solo contiene HTML/Tailwind y el mapeo de los datos.
 - **El Cerebro** (`useComponent.ts`): Un Custom Hook hermano que maneja los estados, las validaciones y habla con los servicios. Retorna exactamente lo que la vista necesita.
 
-### B. Principio de Responsabilidad Única (SRP)
+### B. Manejo de Estado (Regla Pragmática)
+
+El proyecto prioriza el estado local cuando una vista puede resolverse con `useState`, `useReducer`, `react-hook-form` o un custom hook encapsulado. No se debe introducir estado global por costumbre.
+
+- **Estado local primero:** Formularios, modales, tabs, filtros locales y loaders de una sola vista se resuelven dentro del hook de la feature.
+- **Estado global solo si aplica:** Cuando varios módulos o layouts necesiten compartir estado de forma consistente, se utilizará `zustand`.
+- **No duplicar fuentes de verdad:** Los datos remotos deben conservar una sola fuente de verdad. Zustand no debe reemplazar el ciclo natural de lectura/escritura del backend; se usará para estado de interfaz global, preferencias, filtros persistentes, selección activa y datos transversales de sesión ya normalizados para UI.
+- **Formulario != Store global:** El estado de formularios seguirá en `react-hook-form`, no en Zustand.
+
+### C. Principio de Responsabilidad Única (SRP)
 
 Cada función o clase hace una sola cosa.
 
@@ -33,6 +42,7 @@ Para mantener la estética moderna y el código limpio, se usarán estas herrami
 - **Alertas / Notificaciones:** `sonner`. Reemplaza los `alert()` nativos y SweetAlert. Son notificaciones tipo "toast" minimalistas, elegantes y no bloquean la pantalla del usuario.
 - **Validaciones y Reglas:** `zod`. Para esquemas de validación estrictos y tipados.
 - **Manejo de Formularios:** `react-hook-form`. Integrado con Zod, evita los re-renders innecesarios y saca la lógica del formulario del componente UI.
+- **Estado Global (si aplica):** `zustand`. Para estado compartido entre módulos o layouts cuando el alcance exceda una sola feature.
 
 ---
 
@@ -64,6 +74,7 @@ src/
     │
     ├── components/           # UI compartida (Botones, Inputs, Modales base)
     ├── hooks/                # Hooks globales (ej. useAuth, useMediaQuery)
+    ├── stores/               # Stores globales con Zustand (solo si aplica)
     ├── utils/                # Funciones puras (Sin estado de React)
     │   ├── date-format.ts    # Formateo de fechas
     │   ├── math-rules.ts     # Cálculos (ej. minutos a horas nómina)
@@ -86,3 +97,15 @@ Si seguimos el principio SRP y la separación de UI, el flujo para crear un grup
 2. **`src/features/groups/services/groupApi.ts`**: Solo contiene el `fetch()` hacia `POST /api/groups`.
 3. **`src/features/groups/hooks/useCreateGroup.ts`**: Usa React Hook Form y Zod. Llama a `groupApi`. Si falla, dispara un `toast.error()` de Sonner. Si es exitoso, dispara `toast.success()`. Retorna `{ form, onSubmit, isLoading }`.
 4. **`src/features/groups/components/CreateGroupForm.tsx`** (LA UI): Importa el hook anterior. Pinta el `<form>`, los inputs de Tailwind y mapea los errores visuales. No sabe nada de APIs, ni de base de datos, ni de validaciones directas.
+
+---
+
+## 5. Regla de Uso para Zustand
+
+Antes de crear una store global, se debe responder "sí" a por lo menos una de estas preguntas:
+
+1. ¿Este estado debe ser consumido por múltiples rutas o layouts?
+2. ¿La sincronización entre componentes hermanos o alejados está generando prop drilling innecesario?
+3. ¿Este estado representa una preferencia global del usuario o una selección transversal de la app?
+
+Si la respuesta es "no", el estado debe permanecer local a la feature.

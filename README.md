@@ -132,15 +132,18 @@ La navegacion principal de la plataforma esta organizada en los siguientes modul
 <div align="center">
   <img src="https://img.shields.io/badge/Auth.js-Autenticacion-18181B?style=for-the-badge&logo=auth0&logoColor=white" alt="Auth.js" />
   <img src="https://img.shields.io/badge/Google%20Drive%20API-Integracion-4285F4?style=for-the-badge&logo=googledrive&logoColor=white" alt="Google Drive API" />
-  <img src="https://img.shields.io/badge/OpenAI-IA%20generativa-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI" />
+  <img src="https://img.shields.io/badge/Gemini%20Flash-IA%20generativa-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini Flash" />
   <img src="https://img.shields.io/badge/Vercel-Deploy-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
 </div>
+
+La autenticacion de la plataforma se implementara con **Auth.js** y proveedor de Google, manteniendo el aislamiento estricto por profesor como regla central del sistema.
 
 ### Filosofia tecnica
 
 - arquitectura por modulos de negocio
 - separacion estricta entre UI y logica
 - backend integrado en Next.js
+- estado local por defecto y `zustand` cuando exista estado global compartido
 - minimo de dependencias externas
 - automatizacion enfocada en necesidades reales del docente
 
@@ -167,6 +170,7 @@ Actualmente el proyecto se encuentra en etapa de construccion inicial, con base 
 - stack tecnologico
 - guia visual
 - roadmap de desarrollo
+- flujo de git y trabajo
 
 Toda esta documentacion vive en la carpeta [`docs`](./docs).
 

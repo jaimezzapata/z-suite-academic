@@ -6,21 +6,43 @@
 
 ---
 
+## Cómo saber si vamos bien
+
+El proyecto avanza bien cuando se cumplen estas condiciones:
+
+1. **Se trabaja en orden del checklist.** No se adelantan fases críticas sin cerrar primero la base técnica y el aislamiento multi-tenant.
+2. **Cada tarea cerrada deja evidencia real.** Ejemplo: dependencia instalada, archivo creado, conexión validada, comando ejecutado o estructura implementada.
+3. **La documentación y el código se mantienen alineados.** Si cambia una decisión técnica, se actualiza la documentación antes o durante la implementación.
+4. **No quedan huecos invisibles entre tareas.** Si un punto grande contiene varios pasos, se divide en subtareas más precisas para saber exactamente qué está completo y qué no.
+5. **Cada bloque terminado deja al proyecto listo para el siguiente.** No se marca algo como completo si todavía bloquea la siguiente tarea.
+
+### Estado actual de avance
+
+- `FASE 0.1` completada
+- `FASE 0.2` en progreso
+- Base de datos conectada con PostgreSQL mediante Prisma
+- Arquitectura inicial de `src/features` y `src/shared` creada
+- Siguiente objetivo en orden: sistema de diseño base y configuración visual
+
+---
+
 ## FASE 0: Cimientos, Entorno y UI Base (Semana 1)
 
 **Objetivo:** Configurar el esqueleto técnico, la base de datos y el sistema de diseño según la guía visual.
 
 ### 0.1 Setup del Proyecto
 
-- [ ] Inicializar Next.js (App Router) con TypeScript.
-- [ ] Configurar Vercel Postgres y Prisma (`prisma init`).
-- [ ] Estructurar carpetas bajo Screaming Architecture (`/src/features/`, `/src/shared/`).
+- [x] Inicializar Next.js (App Router) con TypeScript.
+- [x] Inicializar Prisma para PostgreSQL (`prisma init`).
+- [x] Configurar conexión con PostgreSQL (`DATABASE_URL`).
+- [x] Estructurar carpetas bajo Screaming Architecture (`/src/features/`, `/src/shared/`).
 
 ### 0.2 Sistema de Diseño (UI)
 
 - [ ] Configurar Tailwind CSS con la paleta de colores pastel (`bg-slate-50`, `blue-50`, `emerald-50`).
 - [ ] Instalar e inicializar `lucide-react` para iconos.
 - [ ] Instalar e inicializar `sonner` para las alertas tipo toast.
+- [x] Definir estrategia de manejo de estado: local por defecto y `zustand` solo para estado global compartido cuando aplique.
 - [ ] Crear componentes UI Base (SRP): `<Button />` (con microanimaciones), `<Input />`, `<Modal />` (con transiciones fluidas), y `<SkeletonCard />`.
 
 ### 0.3 Autenticación y Aislamiento (RF 0.1.1 - 0.1.3)
@@ -129,7 +151,7 @@
 - [ ] UI: Formulario de Bitácora diaria (`topicsCovered`).
 - [ ] UI: Botón de "Generar Examen M[X]" (con Loader spinner).
 - [ ] Backend: Recuperar registros de bitácora anteriores al momento actual.
-- [ ] Backend: Llamada a OpenAI/Anthropic con System Prompt Estricto (Restringido al contexto extraído).
+- [ ] Backend: Llamada a Gemini Flash con System Prompt Estricto (Restringido al contexto extraído).
 
 ### 4.4 Generador PDF y Depósito
 
@@ -145,4 +167,4 @@
 
 - [ ] **5.1 Auditoría de Aislamiento:** Revisar que el 100% de las consultas Prisma tengan `where: { teacherId: user.id }`.
 - [ ] **5.2 Auditoría Visual:** Revisar zonas de toque móvil (`h-11`) y microinteracciones de 200ms.
-- [ ] **5.3 Deploy:** Conectar repo a Vercel, configurar variables de entorno (DB, Google Auth, OpenAI API).
+- [ ] **5.3 Deploy:** Conectar repo a Vercel, configurar variables de entorno (DB, Google Auth, Gemini API).

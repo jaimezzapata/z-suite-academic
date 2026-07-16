@@ -11,7 +11,7 @@
 
 > Como profesor, quiero iniciar sesión con mi cuenta de Google de forma segura, para tener un entorno de trabajo estrictamente privado y separado de otros docentes.
 
-- **RF 0.1.1 (Login):** El sistema debe implementar autenticación mediante OAuth 2.0 (Google Provider).
+- **RF 0.1.1 (Login):** El sistema debe implementar autenticación mediante **Auth.js** con OAuth 2.0 usando Google Provider.
 - **RF 0.1.2 (Persistencia):** Al hacer login exitoso, el sistema insertará o actualizará el registro en la tabla `Teacher`. Debe capturar y almacenar el `refresh_token` de Google de forma encriptada en la tabla `TeacherAuth`.
 - **RF 0.1.3 (Aislamiento Estricto):** Todas las consultas (Query) al backend (GET, POST, PUT, DELETE) deben extraer el `TeacherId` del token de sesión activo. Es obligatorio incluir la cláusula `where: { teacherId: session.user.id }` en cada consulta a la base de datos. Ningún endpoint debe aceptar el `TeacherId` como parámetro enviado desde el frontend (para evitar suplantación).
 
@@ -123,7 +123,7 @@
 > Como profesor, quiero generar un examen mediante IA basado solo en mis temas, para obtener un PDF descargable y guardado en Drive.
 
 - **RF 4.2.1 (Extracción de Contexto):** Al pedir el examen, el backend leerá la tabla `SessionLog` de todas las sesiones anteriores a la fecha actual. Si no hay registros en la bitácora, NO bloqueará al usuario; mostrará un input de texto vacío para que escriba manualmente los temas.
-- **RF 4.2.2 (System Prompt Restringido):** La petición a la IA (OpenAI/Anthropic) debe contener la instrucción literal:
+- **RF 4.2.2 (System Prompt Restringido):** La petición a la IA (inicialmente mediante Gemini Flash) debe contener la instrucción literal:
   > "Genera un examen sobre los siguientes temas. REGLA ESTRICTA: No uses conocimiento externo. Si un tema no está en la lista proporcionada, no lo incluyas".
 - **RF 4.2.3 (Formato PDF):** La respuesta de la IA (Markdown) debe ser convertida en backend a formato PDF (`.pdf`) utilizando una librería (ej. `puppeteer` o `pdfkit`).
 - **RF 4.2.4 (Depósito Doble):** El backend generará dos PDFs:

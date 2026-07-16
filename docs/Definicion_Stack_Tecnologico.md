@@ -34,7 +34,16 @@
 
 ---
 
-## 4. Generación de PDF (Local en Servidor)
+## 4. Manejo de Estado (Si Aplica)
+
+**Tecnología:** `zustand`
+
+- **¿Por qué?** Es una librería ligera, simple y suficiente para manejar estado global compartido sin añadir complejidad innecesaria. Encaja bien con la filosofía minimalista del proyecto.
+- **Regla de Uso:** Solo se usará cuando el estado necesite compartirse entre múltiples módulos o layouts. El estado local seguirá resolviéndose con hooks de React y `react-hook-form`.
+
+---
+
+## 5. Generación de PDF (Local en Servidor)
 
 **Tecnología:** `@react-pdf/renderer`
 
@@ -42,15 +51,15 @@
 
 ---
 
-## 5. Las 2 ÚNICAS Integraciones Externas Estrictas
+## 6. Las 2 ÚNICAS Integraciones Externas Estrictas
 
 Dado el modelo de negocio de la app, estas son las únicas salidas a internet que hará tu servidor:
 
 1. **Google Drive API** (`googleapis` - npm)
    Obligatoria para cumplir la Promesa de Valor (crear carpetas sin Apps Script). Usa el token guardado en tu base de datos para hablar directamente con los servidores de Google.
 
-2. **Generación IA** (`openai` o `anthropic` - npm)
-   Obligatoria para la creación de exámenes. Se le envía el texto estricto de la bitácora local a la API del modelo de lenguaje para que devuelva el contenido en formato Markdown.
+2. **Generación IA** (`@google/genai` o SDK/cliente HTTP compatible con Gemini API)
+   Obligatoria para la creación de exámenes. Inicialmente se usará **Gemini Flash** como proveedor de IA. Se le enviará el texto estricto de la bitácora local a la API del modelo para que devuelva el contenido en formato Markdown.
 
 ---
 
@@ -60,4 +69,4 @@ Para que esta aplicación opere a nivel mundial, solo necesitas gestionar 3 cuen
 
 1. **Vercel** (Para alojar el código y la Base de Datos).
 2. **Google Cloud Platform** (Gratis, para las credenciales OAuth y API de Drive).
-3. **OpenAI / Anthropic** (Para el pago por uso de los tokens de generación de exámenes).
+3. **Google AI Studio / Gemini API** (Para el uso del modelo Gemini Flash en la generación de exámenes).
