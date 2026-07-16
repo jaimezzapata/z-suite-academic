@@ -19,10 +19,12 @@ El proyecto avanza bien cuando se cumplen estas condiciones:
 ### Estado actual de avance
 
 - `FASE 0.1` completada
-- `FASE 0.2` en progreso
+- `FASE 0.2` completada
 - Base de datos conectada con PostgreSQL mediante Prisma
 - Arquitectura inicial de `src/features` y `src/shared` creada
-- Siguiente objetivo en orden: sistema de diseño base y configuración visual
+- Sistema de diseño base configurado con tokens visuales, Sonner y Lucide
+- Componentes UI base compartidos creados
+- Siguiente objetivo en orden: autenticación y aislamiento multi-tenant
 
 ---
 
@@ -39,11 +41,11 @@ El proyecto avanza bien cuando se cumplen estas condiciones:
 
 ### 0.2 Sistema de Diseño (UI)
 
-- [ ] Configurar Tailwind CSS con la paleta de colores pastel (`bg-slate-50`, `blue-50`, `emerald-50`).
-- [ ] Instalar e inicializar `lucide-react` para iconos.
-- [ ] Instalar e inicializar `sonner` para las alertas tipo toast.
+- [x] Configurar Tailwind CSS con la paleta de colores pastel (`bg-slate-50`, `blue-50`, `emerald-50`).
+- [x] Instalar e inicializar `lucide-react` para iconos.
+- [x] Instalar e inicializar `sonner` para las alertas tipo toast.
 - [x] Definir estrategia de manejo de estado: local por defecto y `zustand` solo para estado global compartido cuando aplique.
-- [ ] Crear componentes UI Base (SRP): `<Button />` (con microanimaciones), `<Input />`, `<Modal />` (con transiciones fluidas), y `<SkeletonCard />`.
+- [x] Crear componentes UI Base (SRP): `<Button />` (con microanimaciones), `<Input />`, `<Modal />` (con transiciones fluidas), y `<SkeletonCard />`.
 
 ### 0.3 Autenticación y Aislamiento (RF 0.1.1 - 0.1.3)
 
