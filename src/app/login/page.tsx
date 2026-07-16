@@ -1,11 +1,14 @@
 import { AuthEntryShell } from "@/features/auth/components/auth-entry-shell";
+import { LoginForm } from "@/features/auth/components/login-form";
 
 export default function LoginPage() {
   return (
     <AuthEntryShell
-      description="Accede a tu espacio docente para gestionar grupos, calendario academico y recursos en un flujo unificado."
+      accent="blue"
       eyebrow="Acceso"
       title="Ingresa a Z-Suite Academic"
-    />
+    >
+      <LoginForm />
+    </AuthEntryShell>
   );
 }

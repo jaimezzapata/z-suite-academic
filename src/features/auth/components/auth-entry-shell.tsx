@@ -1,17 +1,33 @@
 import Link from "next/link";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import type { ReactNode } from "react";
+import { cn } from "@/shared/utils/cn";
 
 type AuthEntryShellProps = {
-  description: string;
+  accent?: "blue" | "emerald";
+  children?: ReactNode;
+  description?: string;
   eyebrow: string;
   title: string;
 };
 
 export function AuthEntryShell({
+  accent = "blue",
+  children,
   description,
   eyebrow,
   title,
 }: AuthEntryShellProps) {
+  const accentPill =
+    accent === "emerald"
+      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+      : "border-blue-200 bg-blue-50 text-blue-700";
+
+  const accentCard =
+    accent === "emerald"
+      ? "border-emerald-200/80"
+      : "border-blue-200/80";
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-slate-50">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -20,9 +36,14 @@ export function AuthEntryShell({
       </div>
 
       <section className="relative flex min-h-screen items-center justify-center px-4 py-6 sm:px-6 lg:px-8">
-        <div className="glass-panel w-full max-w-2xl rounded-[36px] p-6 sm:p-8">
+        <div className="glass-panel w-full max-w-xl rounded-[34px] p-5 sm:p-6">
           <div className="flex items-center justify-between gap-4">
-            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-slate-400 shadow-sm">
+            <div
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] shadow-sm",
+                accentPill,
+              )}
+            >
               <Sparkles className="h-3.5 w-3.5 text-slate-500" />
               {eyebrow}
             </div>
@@ -36,13 +57,22 @@ export function AuthEntryShell({
             </Link>
           </div>
 
-          <div className="mt-10 rounded-[30px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+          <div
+            className={cn(
+              "mt-6 rounded-[28px] border bg-white p-5 shadow-sm sm:p-6",
+              accentCard,
+            )}
+          >
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
               {title}
             </h1>
-            <p className="mt-4 max-w-xl text-base leading-8 text-slate-600">
-              {description}
-            </p>
+            {description ? (
+              <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600">
+                {description}
+              </p>
+            ) : null}
+
+            {children ? <div className="mt-8">{children}</div> : null}
           </div>
         </div>
       </section>
