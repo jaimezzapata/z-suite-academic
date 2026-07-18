@@ -1,6 +1,6 @@
 # Roadmap de Desarrollo y Plan de Trabajo (Checklist)
 
-**Proyecto:** Plataforma SaaS de Gestión Docente
+**Proyecto:** z-suite-academic
 **Metodología:** Desarrollo por Capas Verticales (Feature-Driven Development).
 **Regla de Oro:** Ninguna HU de las Fases 2, 3 o 4 puede comenzar si la Fase 0 y 1 (Aislamiento Multi-Tenant) no están 100% probadas.
 
@@ -24,6 +24,7 @@ El proyecto avanza bien cuando se cumplen estas condiciones:
 - Arquitectura inicial de `src/features` y `src/shared` creada
 - Sistema de diseño base configurado con tokens visuales, Sonner y Lucide
 - Componentes UI base compartidos creados
+- La ruta raiz del proyecto redirige a `login` como punto de entrada principal
 - Siguiente objetivo en orden: autenticación y aislamiento multi-tenant
 
 ---
@@ -49,11 +50,14 @@ El proyecto avanza bien cuando se cumplen estas condiciones:
 
 ### 0.3 Autenticación y Aislamiento (RF 0.1.1 - 0.1.3)
 
-- [ ] Configurar credenciales OAuth 2.0 en Google Cloud Console (Drive API habilitada).
-- [ ] Instalar y configurar Auth.js con el proveedor de Google.
-- [ ] Crear tabla `Teacher` y `TeacherAuth` en Prisma.
-- [ ] Capturar y guardar el `refresh_token` de Google al iniciar sesión.
-- [ ] **HITO CRÍTICO:** Crear el Custom Hook global `useAuth()` y el middleware para proteger las rutas.
+- [x] Definir que la app no tendrá landing page pública; la entrada principal será `/login`.
+- [x] Crear vistas iniciales de `login` y `registro` como acceso base del producto.
+- [x] Redirigir la ruta `/` hacia `/login`.
+- [x] Configurar credenciales OAuth 2.0 en Google Cloud Console para acceso con Google.
+- [x] Instalar y configurar Auth.js con Google + credenciales.
+- [x] Consolidar persistencia en Prisma con `User`, `Account`, `Session` y `UserCredential`.
+- [x] Capturar y resguardar el `refresh_token` de Google cifrado en la cuenta asociada.
+- [x] **HITO CRÍTICO:** Crear el Custom Hook global `useAuth()` y el middleware para proteger `/dashboard`.
 
 ---
 
@@ -63,19 +67,19 @@ El proyecto avanza bien cuando se cumplen estas condiciones:
 
 ### 1.1 Base de Datos (Instituciones y Contenido)
 
-- [ ] Desplegar modelos en Prisma: `Institution`, `Location`, `CoreContent`, `StudyPlan`, `Cohort`.
+- [x] Desplegar modelos en Prisma: `Institution`, `Location`, `CoreContent`, `StudyPlan`, `Cohort`.
 
 ### 1.2 Gestión de Instituciones (HU 1.1)
 
-- [ ] Crear validadores Zod (`institutionSchema`) para reglas estrictas de 45/60 min.
-- [ ] Construir API Route protegida (inyectando `teacherId` del token).
-- [ ] UI: Formulario de creación de Instituciones y listado de sedes.
+- [x] Crear validadores Zod (`institutionSchema`) para reglas estrictas de 45/60 min.
+- [x] Construir API Routes protegidas inyectando `userId` desde la sesión.
+- [x] UI: Formulario de creación de instituciones y sedes con listados persistidos.
 
 ### 1.3 Desacoplamiento de Pénsum (HU 1.2)
 
-- [ ] UI: CRUD para crear `CoreContent` (ej. "React Base").
-- [ ] UI: Formulario de asignación a un `StudyPlan` (Alias) según la sede elegida (ej. "Front 2").
-- [ ] Lógica visual: Mostrar solo el Alias en las tarjetas de la interfaz.
+- [x] UI base para crear `CoreContent` (ej. "React Base") y listarlo por usuario.
+- [x] UI base para asignar un `StudyPlan` (Alias) según la sede elegida (ej. "Front 2").
+- [x] Lógica visual inicial: En el módulo `Pensum` se prioriza el `aliasName` como nombre visible del plan.
 
 ---
 

@@ -10,9 +10,9 @@ type LinkButtonProps = ComponentProps<typeof Link> & {
 
 const variantClasses: Record<LinkButtonVariant, string> = {
   primary:
-    "bg-slate-900 text-slate-50 hover:bg-slate-800 focus-visible:outline-slate-400",
+    "bg-blue-700 text-white hover:bg-blue-800 focus-visible:outline-blue-200",
   secondary:
-    "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 focus-visible:outline-slate-300",
+    "bg-slate-100 text-slate-700 hover:bg-slate-200 focus-visible:outline-slate-200",
   ghost:
     "bg-transparent text-slate-700 hover:bg-slate-100 focus-visible:outline-slate-300",
 };
@@ -25,7 +25,7 @@ export function LinkButton({
   return (
     <Link
       className={cn(
-        "inline-flex h-11 items-center justify-center rounded-2xl px-4 text-sm font-medium shadow-sm",
+        "inline-flex h-11 items-center justify-center rounded-xl px-4 text-sm font-medium shadow-sm",
         "transition-all duration-200 ease-out active:scale-95",
         variantClasses[variant],
         className,
@@ -34,4 +34,3 @@ export function LinkButton({
     />
   );
 }
-

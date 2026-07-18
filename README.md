@@ -31,6 +31,7 @@ La idea central es reducir trabajo manual, evitar dispersion de informacion y of
 - [Proposito](#proposito)
 - [Objetivo](#objetivo)
 - [Modulos del sistema](#modulos-del-sistema)
+- [Acceso y vistas iniciales](#acceso-y-vistas-iniciales)
 - [Tecnologias](#tecnologias)
 - [Arquitectura](#arquitectura)
 - [Proyecto personal](#proyecto-personal)
@@ -114,6 +115,16 @@ La navegacion principal de la plataforma esta organizada en los siguientes modul
 - preferencias visuales como modo claro y modo oscuro
 - configuracion de cuenta y cierre de sesion
 
+## Acceso y vistas iniciales
+
+La aplicacion no tendra una landing page publica de presentacion. La ruta raiz del proyecto redirige directamente al flujo de autenticacion.
+
+- `/` redirige a `/login`
+- `/login` es la vista principal inicial del sistema
+- `/registro` es la vista de creacion de cuenta
+
+La experiencia inicial debe sentirse como producto listo para usar, no como una pagina promocional. Por esa razon, las vistas de acceso se diseñan con lenguaje visual de aplicacion SaaS academica: composicion limpia, jerarquia clara, boton principal fuerte y texto minimo.
+
 ## Tecnologias
 
 ### Stack principal
@@ -136,7 +147,7 @@ La navegacion principal de la plataforma esta organizada en los siguientes modul
   <img src="https://img.shields.io/badge/Vercel-Deploy-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
 </div>
 
-La autenticacion de la plataforma se implementara con **Auth.js** y proveedor de Google, manteniendo el aislamiento estricto por profesor como regla central del sistema.
+La autenticacion de la plataforma se implementara con **Auth.js** y proveedor de Google, manteniendo el aislamiento estricto por profesor como regla central del sistema. La entrada principal del usuario sera siempre el login.
 
 ### Filosofia tecnica
 
@@ -151,7 +162,7 @@ La autenticacion de la plataforma se implementara con **Auth.js** y proveedor de
 
 El proyecto sigue una arquitectura orientada a modulos de negocio:
 
-- `src/app`: rutas y layout de Next.js
+- `src/app`: rutas y layout de Next.js, incluyendo redireccion de `/` hacia `/login`
 - `src/features`: funcionalidades por dominio
 - `src/shared`: componentes, hooks, utilidades y tipos compartidos
 
@@ -191,7 +202,7 @@ npm install
 npm run dev
 ```
 
-Despues, abre `http://localhost:3000` en el navegador.
+Despues, abre `http://localhost:3000` en el navegador. La aplicacion redirige automaticamente a `http://localhost:3000/login`.
 
 ## Licencia
 

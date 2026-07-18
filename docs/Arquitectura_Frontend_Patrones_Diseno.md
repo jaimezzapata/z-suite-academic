@@ -1,6 +1,6 @@
 # Arquitectura Frontend y Patrones de Diseño
 
-**Proyecto:** Plataforma SaaS de Gestión Docente
+**Proyecto:** z-suite-academic
 **Filosofía Principal:** Screaming Architecture (Feature-Sliced Design) + Principio de Responsabilidad Única (SRP).
 **Framework:** Next.js (App Router) + TypeScript.
 
@@ -50,9 +50,20 @@ Para mantener la estética moderna y el código limpio, se usarán estas herrami
 
 El proyecto se estructurará agrupando por "Features" (Módulos de Negocio), no por tipo de archivo técnico. La carpeta `src` estará dividida en el Core de Next.js (`app`) y el dominio de tu aplicación (`features` y `shared`).
 
+Decisión vigente de entrada al sistema:
+
+- No existe landing page pública.
+- La ruta `/` redirige directamente a `/login`.
+- Las vistas iniciales públicas del proyecto son `/login` y `/registro`.
+- El nombre visible del producto debe mantenerse consistente como `z-suite-academic`.
+- La sesión se centraliza con `Auth.js`, `useAuth()` en cliente y middleware para proteger `/dashboard`.
+- El usuario autenticado (`User`) es la raíz del aislamiento multi-tenant de todos los modelos de negocio.
+
 ```
 src/
 ├── app/                      # SOLO Rutas de Next.js (Pages y Layouts)
+│   ├── login/page.tsx        # Vista principal inicial del sistema
+│   ├── registro/page.tsx     # Vista de registro
 │   ├── (dashboard)/
 │   │   ├── grupos/page.tsx   # Solo importa y renderiza la Feature "Groups"
 │   │   └── drive/page.tsx
@@ -60,6 +71,10 @@ src/
 │
 ├── features/                 # SCREAMING ARCHITECTURE: El corazón del negocio
 │   │
+│   ├── auth/                 # Feature: autenticación, sesión y seguridad
+│   ├── dashboard/            # Feature: shell administrativa y navegación base
+│   ├── institutions/         # Feature: instituciones y sedes
+│   ├── pensum/               # Feature: contenidos base y alias por sede
 │   ├── groups/               # Feature: Gestión de Grupos
 │   │   ├── components/       # Componentes visuales puros (ej. GroupCard.tsx)
 │   │   ├── hooks/            # Lógica aislada (ej. useCreateGroup.ts)
@@ -100,7 +115,18 @@ Si seguimos el principio SRP y la separación de UI, el flujo para crear un grup
 
 ---
 
-## 5. Regla de Uso para Zustand
+## 5. Regla de Aislamiento Multi-Tenant
+
+Toda entidad de negocio debe pertenecer al `User` autenticado o a una entidad hija ya asociada a ese `User`.
+
+- El frontend nunca envía `userId`.
+- Las API Routes obtienen el usuario desde la sesión (`getSessionUser()` o equivalente).
+- Los modelos base actuales (`Institution`, `Location`, `CoreContent`, `StudyPlan`, `Cohort`) ya incorporan esta relación.
+- La UI solo muestra datos filtrados por el usuario autenticado.
+
+---
+
+## 6. Regla de Uso para Zustand
 
 Antes de crear una store global, se debe responder "sí" a por lo menos una de estas preguntas:
 

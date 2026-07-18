@@ -1,6 +1,6 @@
 # Backlog de Historias de Usuario y Requerimientos Funcionales (RF)
 
-**Proyecto:** Plataforma SaaS de Gestión Docente
+**Proyecto:** z-suite-academic
 **Enfoque:** Estricto, sin ambigüedades. Instrucciones literales para desarrollo.
 
 ---
@@ -12,8 +12,8 @@
 > Como profesor, quiero iniciar sesión con mi cuenta de Google de forma segura, para tener un entorno de trabajo estrictamente privado y separado de otros docentes.
 
 - **RF 0.1.1 (Login):** El sistema debe implementar autenticación mediante **Auth.js** con OAuth 2.0 usando Google Provider.
-- **RF 0.1.2 (Persistencia):** Al hacer login exitoso, el sistema insertará o actualizará el registro en la tabla `Teacher`. Debe capturar y almacenar el `refresh_token` de Google de forma encriptada en la tabla `TeacherAuth`.
-- **RF 0.1.3 (Aislamiento Estricto):** Todas las consultas (Query) al backend (GET, POST, PUT, DELETE) deben extraer el `TeacherId` del token de sesión activo. Es obligatorio incluir la cláusula `where: { teacherId: session.user.id }` en cada consulta a la base de datos. Ningún endpoint debe aceptar el `TeacherId` como parámetro enviado desde el frontend (para evitar suplantación).
+- **RF 0.1.2 (Persistencia):** Al hacer login exitoso, el sistema insertará o actualizará el registro en `User` y su cuenta vinculada en `Account`. Debe capturar el `refresh_token` de Google y resguardarlo cifrado dentro de la cuenta asociada al proveedor.
+- **RF 0.1.3 (Aislamiento Estricto):** Todas las consultas (GET, POST, PUT, DELETE) al backend deben extraer el `userId` de la sesión activa. Es obligatorio incluir filtros equivalentes a `where: { userId: session.user.id }` en cada consulta de negocio. Ningún endpoint debe aceptar el `userId` como parámetro enviado desde el frontend.
 
 ### HU 0.2: Dashboard y Métricas de Infraestructura
 

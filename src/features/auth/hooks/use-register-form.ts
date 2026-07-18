@@ -1,36 +1,39 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import type { KeyboardEvent } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-import { authApi } from "@/features/auth/services/auth-api";
-
-const registerSchema = z
-  .object({
-    name: z.string().min(2, "Ingresa tu nombre"),
-    email: z.string().email("Correo inválido"),
-    password: z.string().min(8, "Mínimo 8 caracteres"),
-    confirmPassword: z.string().min(8, "Confirma la contraseña"),
-  })
-  .refine((values) => values.password === values.confirmPassword, {
-    message: "Las contraseñas no coinciden",
-    path: ["confirmPassword"],
-  });
-
-type RegisterFormValues = z.infer<typeof registerSchema>;
+import {
+  authApi,
+  AuthApiError,
+} from "@/features/auth/services/auth-api";
+import {
+  registerSchema,
+  type RegisterFormValues,
+} from "@/features/auth/validations/register-schema";
 
 export function useRegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const fieldOrder: Array<keyof RegisterFormValues> = [
+    "name",
+    "email",
+    "password",
+    "confirmPassword",
+  ];
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
-    mode: "onSubmit",
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    shouldFocusError: true,
   });
 
-  const onSubmit = form.handleSubmit(async (values) => {
+  const handleValidSubmit = async (values: RegisterFormValues) => {
     setIsSubmitting(true);
 
     try {
@@ -39,14 +42,94 @@ export function useRegisterForm() {
         email: values.email,
         password: values.password,
       });
-      toast.success("Cuenta creada correctamente");
-    } catch {
-      toast.error("No fue posible completar el registro");
+      const redirectUrl = await authApi.loginWithEmail({
+        email: values.email,
+        password: values.password,
+      });
+      toast.success("Cuenta creada correctamente.", {
+        description: "Tu sesion ya esta lista.",
+      });
+      router.push(redirectUrl);
+      router.refresh();
+    } catch (error) {
+      const description =
+        error instanceof AuthApiError
+          ? error.message
+          : "Revisa la informacion ingresada e intenta nuevamente.";
+
+      toast.error("No fue posible completar el registro.", {
+        description,
+      });
     } finally {
       setIsSubmitting(false);
     }
-  });
+  };
 
-  return { form, isSubmitting, onSubmit };
+  const handleGoogleSignIn = async () => {
+    setIsSubmitting(true);
+
+    try {
+      await authApi.loginWithGoogle();
+    } catch (error) {
+      const description =
+        error instanceof Error
+          ? error.message
+          : "Intenta nuevamente en unos segundos.";
+
+      toast.error("No fue posible continuar con Google.", {
+        description,
+      });
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInvalidSubmit = () => {
+    const firstError = fieldOrder
+      .map((fieldName) => form.getFieldState(fieldName).error?.message)
+      .find(Boolean);
+
+    toast.warning("Corrige los datos del formulario.", {
+      description: firstError ?? "Verifica la informacion antes de continuar.",
+    });
+  };
+
+  const onSubmit = form.handleSubmit(handleValidSubmit, handleInvalidSubmit);
+
+  const handleFieldKeyDown =
+    (fieldName: keyof RegisterFormValues) =>
+    async (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key !== "Enter") {
+        return;
+      }
+
+      event.preventDefault();
+
+      const isCurrentFieldValid = await form.trigger(fieldName);
+      if (!isCurrentFieldValid) {
+        const errorMessage = form.getFieldState(fieldName).error?.message;
+
+        toast.warning("Corrige este campo.", {
+          description: errorMessage ?? "Verifica el valor ingresado.",
+        });
+        return;
+      }
+
+      const currentFieldIndex = fieldOrder.indexOf(fieldName);
+      const nextField = fieldOrder[currentFieldIndex + 1];
+
+      if (nextField) {
+        form.setFocus(nextField);
+        return;
+      }
+
+      void onSubmit();
+    };
+
+  return {
+    form,
+    handleFieldKeyDown,
+    handleGoogleSignIn,
+    isSubmitting,
+    onSubmit,
+  };
 }
-

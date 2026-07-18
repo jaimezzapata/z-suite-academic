@@ -1,6 +1,6 @@
 # Guía de Estilos y Dirección Visual (Minimalismo Pastel Interactivo)
 
-Este documento define la identidad visual, paleta de colores, tipografía, comportamiento responsivo y las reglas de interacción/animación para la Plataforma SaaS de Gestión Docente.
+Este documento define la identidad visual, paleta de colores, tipografía, comportamiento responsivo y las reglas de interacción/animación para `z-suite-academic`.
 
 ---
 
@@ -9,6 +9,8 @@ Este documento define la identidad visual, paleta de colores, tipografía, compo
 - **Filosofía:** Minimalismo Plano (Flat Minimalism). Cero degradados (Gradients), cero efectos tridimensionales exagerados.
 - **Contraste y Espaciado:** Uso generoso del espacio en blanco, bordes finos de alto contraste y sombras extremadamente sutiles para dar profundidad de forma limpia.
 - **Enfoque de Animación:** Microinteracciones fluidas pero rápidas (máximo 200ms). Nada de animaciones lentas o intrusivas. El movimiento debe guiar la vista del usuario, no distraerlo.
+- **Acceso inicial:** La app no tendrá landing page promocional. La primera impresión del producto será la vista de `login`, seguida por `registro` como flujo complementario.
+- **Lenguaje visual de autenticación:** Las pantallas de acceso deben verse como parte del producto, no como una maqueta vacía. Deben usar composición limpia, una card principal clara, color de acción bien definido y texto mínimo.
 
 ---
 
@@ -104,6 +106,14 @@ La app debe ser 100% utilizable en el celular del profesor (para revisar el sal�
 
 - **Estructura Base Desktop:** Sidebar lateral fijo de navegación, área de contenido con ancho máximo centrado (`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`).
 - **Estructura Base Móvil:** Sidebar oculto que aparece mediante un cajón lateral (drawer) de transición suave desde la izquierda, o barra de navegación inferior minimalista.
+
+### Pantallas de acceso
+
+- La ruta `/login` es la vista principal pública del sistema.
+- La ruta `/registro` es la segunda vista pública.
+- La ruta `/` debe redirigir a `/login`.
+- Las pantallas de acceso no deben incluir una landing de marketing ni bloques decorativos sin propósito.
+- Se deben evitar pills, etiquetas con borde innecesarias o marcos que hagan ver el producto incompleto.
 
 **Grillas Dinámicas:**
 

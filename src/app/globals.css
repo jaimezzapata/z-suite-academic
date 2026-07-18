@@ -7,8 +7,8 @@
   --card-foreground: #0f172a;
   --muted: #e2e8f0;
   --muted-foreground: #475569;
-  --border: #e2e8f0;
-  --ring: #cbd5e1;
+  --border: #dde6f0;
+  --ring: #d6e1ee;
   --primary: #0f172a;
   --primary-foreground: #f8fafc;
   --cesde-background: #eff6ff;
@@ -52,33 +52,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #020617;
-    --foreground: #e2e8f0;
-    --card: #0f172a;
-    --card-foreground: #e2e8f0;
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
-    --border: #1e293b;
-    --ring: #334155;
-    --primary: #e2e8f0;
-    --primary-foreground: #020617;
-  }
-}
-
 * {
   border-color: var(--border);
 }
 
 html {
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
 
 body {
@@ -143,7 +122,15 @@ select {
   transition-timing-function: ease-out;
 }
 
+button {
+  appearance: none;
+}
+
+img {
+  display: block;
+}
+
 :focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--ring) 70%, white);
+  outline: 2px solid rgba(59, 130, 246, 0.18);
   outline-offset: 2px;
 }

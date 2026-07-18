@@ -13,24 +13,33 @@ export function Input({
   label,
   ...props
 }: InputProps) {
+  const inputId = id ?? props.name;
+  const errorId = error && inputId ? `${inputId}-error` : undefined;
+
   return (
-    <label className="flex w-full flex-col gap-2" htmlFor={id}>
+    <label className="flex w-full flex-col gap-2" htmlFor={inputId}>
       {label ? (
         <span className="text-sm font-medium text-slate-700">{label}</span>
       ) : null}
 
       <input
+        aria-describedby={errorId}
+        aria-invalid={Boolean(error)}
         className={cn(
-          "h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm",
-          "placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:outline-none",
-          error && "border-rose-300 bg-rose-50/40",
+          "h-11 w-full rounded-xl border border-slate-100 bg-slate-50 px-4 text-sm text-slate-900 shadow-sm",
+          "placeholder:text-slate-400 focus-visible:border-blue-200 focus-visible:bg-white focus-visible:outline-none",
+          error && "border-rose-200 bg-rose-50/50",
           className,
         )}
-        id={id}
+        id={inputId}
         {...props}
       />
 
-      {error ? <span className="text-xs text-rose-600">{error}</span> : null}
+      {error ? (
+        <span className="text-xs text-rose-600" id={errorId} role="alert">
+          {error}
+        </span>
+      ) : null}
     </label>
   );
 }

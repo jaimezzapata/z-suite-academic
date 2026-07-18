@@ -1,6 +1,6 @@
 # Definición del Stack Tecnológico (Enfoque Minimalista)
 
-**Proyecto:** Plataforma SaaS de Gestión Docente
+**Proyecto:** z-suite-academic
 **Filosofía:** "In-House" (Menor dependencia de terceros). Todo lo que se pueda calcular o generar dentro del propio servidor, se hará sin llamar a APIs externas (excepto las estrictamente necesarias).
 
 ---
